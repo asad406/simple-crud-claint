@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 const Users = () => {
-    const users = useLoaderData();
-
+    const allUsers = useLoaderData();
+    const [users, setAllUser] = useState(allUsers)
+    console.log(users)
     const handleDelete = (_id) => {
-        console.log(_id);
+        console.log({_id});
         fetch(`http://localhost:5000/users/${_id}`,{
             method: 'DELETE'
         })
@@ -14,6 +15,8 @@ const Users = () => {
             .then((data) => {
                 if(data.deletedCount > 0){
                     alert('Delete successfully')
+                    const remaining = users.filter(user => user._id !== _id);
+                    setAllUser(remaining);
                 }
             });
     };
